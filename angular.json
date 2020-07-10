@@ -145,6 +145,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-practice2"
+    }
+  },
+  "defaultProject": "angular-practice2",
+  "cli": {
+    "analytics": false
+  }
 }
