@@ -10,6 +10,7 @@ import {Category} from '../../model/Category';
 export class CategoriesComponent implements OnInit {
 
   categories: Category[];
+  selectedCategory: Category;
   constructor(private dataHandler: DataHandlerService) { }
 
   ngOnInit(): void {
@@ -18,6 +19,7 @@ export class CategoriesComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   showTasksByCategory(category: Category) {
+    this.selectedCategory = category;
     this.dataHandler.fillTaskByCategory(category);
   }
 }
