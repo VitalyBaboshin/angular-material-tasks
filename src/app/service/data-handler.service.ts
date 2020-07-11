@@ -23,4 +23,9 @@ export class DataHandlerService {
     const tasks = TestData.tasks.filter(task => task.category === category );
     this.taskSubject.next(tasks);
   }
+
+  toogleTaskCompleted(task): void {
+    const index = TestData.tasks.indexOf(task);
+    TestData.tasks[index].completed = !TestData.tasks[index].completed;
+  }
 }

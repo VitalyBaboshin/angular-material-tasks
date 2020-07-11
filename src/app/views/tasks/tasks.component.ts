@@ -8,7 +8,6 @@ import {DataHandlerService} from '../../service/data-handler.service';
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent implements OnInit {
-
   tasks: Task[];
   constructor(private dataHandler: DataHandlerService) { }
 
@@ -16,4 +15,7 @@ export class TasksComponent implements OnInit {
     this.dataHandler.taskSubject.subscribe(tasks => this.tasks = tasks);
   }
 
+  toogleTaskCompleted(task: Task): void {
+    this.dataHandler.toogleTaskCompleted(task);
+  }
 }
