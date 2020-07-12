@@ -31,6 +31,9 @@ export class TasksComponent implements OnInit {
   @Output()
   updateTask = new EventEmitter<Task>();
 
+  @Output()
+  deleteTask = new EventEmitter<Task>();
+
   constructor(
     private dataHandler: DataHandlerService,
     private dialog: MatDialog
@@ -105,6 +108,21 @@ export class TasksComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // обработка результата
+      if (result === 'false') {
+        task.completed = false;
+        this.updateTask.emit(task);
+        return;
+      }
+      if (result === 'true') {
+        task.completed = true;
+        this.updateTask.emit(task);
+        return;
+      }
+      if (result === 'delete') {
+        this.deleteTask.emit(task);
+        return;
+      }
+
       if (result as Task) {
         this.updateTask.emit(task);
         return;

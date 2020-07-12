@@ -37,8 +37,16 @@ export class AppComponent implements OnInit{
 
   }
 
-  private onUpdateTask(task: Task): void {
+  public onUpdateTask(task: Task): void {
     this.dataHandler.updateTask(task).pipe(
+      mergeMap(() => this.dataHandler.searchTasks(this.selectedCategory, null, null, null) )
+    ).subscribe(tasks => {
+        this.tasks = tasks;
+      });
+  }
+
+  public onDeleteTask(task: Task): void {
+    this.dataHandler.deleteTask(task.id).pipe(
       mergeMap(() => this.dataHandler.searchTasks(this.selectedCategory, null, null, null) )
     ).subscribe(tasks => {
         this.tasks = tasks;
