@@ -2,7 +2,10 @@ import {Injectable} from '@angular/core';
 import {Category} from '../model/Category';
 import {Task} from '../model/Task';
 import {TestData} from '../data/TestData';
-import {BehaviorSubject} from 'rxjs';
+import {Observable} from 'rxjs';
+import {TaskDaoArray} from '../data/impl/taskDaoArray';
+import {CategoryDaoArray} from '../data/impl/categoryDaoArray';
+import {Priority} from '../model/Priority';
 
 
 @Injectable({
@@ -10,22 +13,24 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class DataHandlerService {
 
-  // taskSubject = new Subject<Task[]>();
-  taskSubject = new BehaviorSubject<Task[]>(TestData.tasks);
-  categoriesSubject = new BehaviorSubject<Category[]>(TestData.categories);
+  private taskDaoArray = new TaskDaoArray();
+  private categoryDaoArray = new CategoryDaoArray();
+
   constructor() { }
 
-
-  fillTasks(): void {
-    this.taskSubject.next(TestData.tasks);
+  getAllTasks(): Observable<Task[]> {
+      return this.taskDaoArray.getAll();
   }
-  fillTaskByCategory(category: Category): void {
-    const tasks = TestData.tasks.filter(task => task.category === category );
-    this.taskSubject.next(tasks);
+  getAllCategories(): Observable<Category[]> {
+    return this.categoryDaoArray.getAll();
   }
 
   toogleTaskCompleted(task): void {
     const index = TestData.tasks.indexOf(task);
     TestData.tasks[index].completed = !TestData.tasks[index].completed;
+  }
+
+  searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
+    return this.taskDaoArray.search(category, searchText, status, priority);
   }
 }
