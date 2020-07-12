@@ -25,6 +25,10 @@ export class DataHandlerService {
     return this.categoryDaoArray.getAll();
   }
 
+  updateTask(task: Task): Observable<Task> {
+    return this.taskDaoArray.update(task);
+  }
+
   toogleTaskCompleted(task): void {
     const index = TestData.tasks.indexOf(task);
     TestData.tasks[index].completed = !TestData.tasks[index].completed;
