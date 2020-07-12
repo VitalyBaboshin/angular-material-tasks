@@ -3,7 +3,6 @@
   <p mat-dialog-title>{{dialogTitle}}</p>
 
   <mat-form-field>
-
     <mat-label>Название (обязательно)</mat-label>
     <input
       #inputTitle
@@ -18,8 +17,30 @@
     >
       <mat-icon>clear</mat-icon>
     </button>
-
   </mat-form-field>
+
+  <!--  выпадающий список категорий-->
+  <mat-form-field>
+    <mat-label>Укажите категорию</mat-label>
+    <mat-select [(ngModel)]="tmpCategory">
+      <mat-option [value]="null">Без категории</mat-option>
+      <mat-option *ngFor="let cat of categories" [value]="cat">
+        {{cat.title}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!--  выпадающий список приоритета-->
+  <mat-form-field>
+    <mat-label>Укажите приоритет</mat-label>
+    <mat-select [(ngModel)]="tmpPriority">
+      <mat-option [value]="null">Без категории</mat-option>
+      <mat-option *ngFor="let priority of priorities" [value]="priority">
+        {{priority.title}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
 </mat-dialog-content>
 
 <!--кнопки возможных дествий-->
