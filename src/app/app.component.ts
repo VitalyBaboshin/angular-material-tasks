@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Task} from './model/Task';
 import {DataHandlerService} from './service/data-handler.service';
 import {Category} from './model/Category';
+import {mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +38,10 @@ export class AppComponent implements OnInit{
   }
 
   private onUpdateTask(task: Task): void {
-    console.log(task);
+    this.dataHandler.updateTask(task).pipe(
+      mergeMap(() => this.dataHandler.searchTasks(this.selectedCategory, null, null, null) )
+    ).subscribe(tasks => {
+        this.tasks = tasks;
+      });
   }
 }
