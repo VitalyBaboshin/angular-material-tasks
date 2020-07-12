@@ -35,6 +35,9 @@ export class DataHandlerService {
     return this.taskDaoArray.update(task);
   }
 
+  deleteTask(id: number): Observable<Task> {
+    return this.taskDaoArray.delete(id);
+  }
   toogleTaskCompleted(task): void {
     const index = TestData.tasks.indexOf(task);
     TestData.tasks[index].completed = !TestData.tasks[index].completed;
