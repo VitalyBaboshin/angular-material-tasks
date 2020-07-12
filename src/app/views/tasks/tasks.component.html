@@ -2,7 +2,7 @@
   <div class="card-header card-header-warning">
     <h4 class="card-title">Список задач </h4>
   </div>
-  <div class="card-body table-responsive">
+  <div class="card-body table-responsive" *ngIf="tasks.length > 0">
     <table [dataSource]="dataSource" mat-table matSort>
 
       <!--цвет приоритета-->
@@ -28,21 +28,22 @@
       <!--дата выполнения-->
       <ng-container matColumnDef="date">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Срок</th>
-        <td class="col-date" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'nodate': !task.date}" mat-cell>
-          {{task.date | date: "medium"}} </td>
+        <td class="col-date" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'novalue': !task.date}" mat-cell>
+          {{task.date ? (task.date | date: "medium") : "Без срока"}} </td>
       </ng-container>
 
       <!--приоритет-->
       <ng-container matColumnDef="priority">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Приоритет</th>
-        <td class="col-priority" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'nopriority': !task.priority}" mat-cell>
+        <td class="col-priority" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'novalue': !task.priority}" mat-cell>
           {{task.priority ? task.priority.title : "Без приоритета"}} </td>
       </ng-container>
 
       <!--категория-->
       <ng-container matColumnDef="category">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
-        <td class="col-category" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'nocategory': !task.category}" mat-cell>
+        <td class="col-category" *matCellDef="let task;"
+            [ngClass]="{'completed': task.completed, 'novalue': !task.category}" mat-cell>
           {{task.category ? task.category.title : "Без категории"}} </td>
       </ng-container>
 
@@ -97,4 +98,5 @@
     </div>
 
   </div>
+  <div *ngIf="tasks.length == 0"><p class="not-found">Нету записей</p></div>
 </div>
