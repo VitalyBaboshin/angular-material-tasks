@@ -40,10 +40,20 @@ export class TaskDaoArray implements TaskDao {
     return undefined;
   }
 
+  /** Поиск задачи по параметрам, если одно из значений null то не будем учитывать его при поиске */
   search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
-    return undefined;
+    return of(this.searchTodos(category, searchText, status, priority));
   }
 
+  private searchTodos(category: Category, searchText: string, status: boolean, priority: Priority): Task[] {
+    let allTasks = TestData.tasks;
+
+    if ( category != null) {
+      allTasks = allTasks.filter(todo => todo.category === category);
+    }
+
+    return allTasks;
+  }
   update(T): Observable<Task> {
     return undefined;
   }
