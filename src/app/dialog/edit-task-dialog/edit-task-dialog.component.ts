@@ -1,9 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Task} from 'src/app/model/Task';
 import {DataHandlerService} from '../../service/data-handler.service';
 import {Category} from '../../model/Category';
 import {Priority} from '../../model/Priority';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -15,16 +16,17 @@ export class EditTaskDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: [Task, string],
-    private dataHandler: DataHandlerService
+    private dataHandler: DataHandlerService,
+    private dialog: MatDialog
   ) { }
 
-  private categories: Category[];
-  private priorities: Priority[];
-  private dialogTitle: string;
-  private task: Task;
+  public categories: Category[];
+  public priorities: Priority[];
+  public dialogTitle: string;
+  public task: Task;
   public tmpTitle: string;
-  private tmpCategory: Category;
-  private tmpPriority: Priority;
+  public tmpCategory: Category;
+  public tmpPriority: Priority;
 
   ngOnInit(): void {
     this.task = this.data[0]; // задача для редактирования/создания
@@ -39,7 +41,7 @@ export class EditTaskDialogComponent implements OnInit {
     this.dataHandler.getAllPriorities().subscribe( items => this.priorities = items);
   }
 
-  private onConfirm(): void {
+  public onConfirm(): void {
     // считываем все значения для сохранения в поле задачи
     this.task.title = this.tmpTitle;
     this.task.category = this.tmpCategory;
@@ -49,7 +51,28 @@ export class EditTaskDialogComponent implements OnInit {
     this.dialogRef.close(this.task);
   }
 
-  private onCancel(): void {
+  public onCancel(): void {
     this.dialogRef.close(null);
+  }
+
+  public delete(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '500px',
+      data: {
+        dialogTitle: 'Подтвердите действие',
+        message: `Вы действительно хотите удалить задачу: "${this.task.title}"?`
+      },
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      if (result) {
+        this.dialogRef.close('delete');
+      }
+    });
+  }
+
+  public toogleCompleted(message: string): void {
+    this.dialogRef.close(message);
   }
 }
