@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DataHandlerService} from '../../service/data-handler.service';
 import {Category} from '../../model/Category';
+import {MatDialog} from '@angular/material/dialog';
+import {EditCategoryComponent} from '../../dialog/edit-category/edit-category.component';
 
 @Component({
   selector: 'app-categories',
@@ -9,8 +11,13 @@ import {Category} from '../../model/Category';
 })
 export class CategoriesComponent {
 
+  public indexMouseMove: number;
+
   @Input()
   categories: Category[];
+
+  @Output()
+  updateCategory = new EventEmitter<Category>();
 
   @Output()
   selectCategory = new EventEmitter<Category>();
@@ -18,11 +25,12 @@ export class CategoriesComponent {
   @Input()
   selectedCategory: Category;
 
-  constructor(private dataHandler: DataHandlerService) { }
+  @Output()
+  deleteCategory = new EventEmitter<Category>();
 
-  // ngOnInit(): void {
-  //   this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
-  // }
+  constructor(private dataHandler: DataHandlerService,
+              private dialog: MatDialog
+  ) { }
 
   showTasksByCategory(category: Category): void {
 
@@ -34,5 +42,26 @@ export class CategoriesComponent {
 
     // вызываем внешний обработчик и передаем туда выбранную категорию
     this.selectCategory.emit(this.selectedCategory);
+  }
+
+  public openEditDialog(category: Category): void {
+    // открытие диалогового окна
+    const dialogRef = this.dialog.open(EditCategoryComponent, {data: [category, 'Редактирование категории'], autoFocus: false});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'delete') {
+        this.deleteCategory.emit(category);
+        return;
+      }
+    //
+      if (result as Category) {
+        this.updateCategory.emit(category);
+        return;
+      }
+    });
+  }
+
+  public showEditIcon(index: number): void {
+    this.indexMouseMove = index;
   }
 }
