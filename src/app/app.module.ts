@@ -24,6 +24,7 @@ import {TaskDatePipe} from './pipe/task-date.pipe';
 import {registerLocaleData} from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {EditCategoryComponent} from './dialog/edit-category/edit-category.component';
 
 registerLocaleData(localeRu);
 @NgModule({
@@ -33,7 +34,8 @@ registerLocaleData(localeRu);
     TasksComponent,
     EditTaskDialogComponent,
     ConfirmDialogComponent,
-    TaskDatePipe
+    TaskDatePipe,
+    EditCategoryComponent
   ],
   imports: [
     MatTableModule,
