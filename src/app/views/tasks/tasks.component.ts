@@ -145,6 +145,7 @@ export class TasksComponent implements OnInit {
       if (result) {
         this.deleteTask.emit(task);
       }
+      this.fillTable();
     });
   }
 
