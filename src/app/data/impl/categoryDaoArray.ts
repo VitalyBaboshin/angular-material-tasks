@@ -17,14 +17,23 @@ export class CategoryDaoArray implements CategoryDao{
   }
 
   delete(id: number): Observable<Category> {
-    return undefined;
+    TestData.tasks.forEach(task => {
+      if (task.category && task.category.id === id) {
+        task.category = null;
+      }
+    });
+    const tmpCategory = TestData.categories.find(t => t.id === id);
+    TestData.categories.splice(TestData.categories.indexOf(tmpCategory), 1);
+    return of(tmpCategory);
   }
 
   search(title: string): Observable<Category[]> {
     return undefined;
   }
 
-  update(T): Observable<Category> {
-    return undefined;
+  update(category: Category): Observable<Category> {
+    const tmpCategory = TestData.categories.find(t => t.id === category.id);
+    TestData.categories.splice(category.id - 1, 1, category);
+    return of(tmpCategory);
   }
 }
