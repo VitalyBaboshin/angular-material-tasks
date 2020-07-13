@@ -15,7 +15,9 @@ export class CategoriesComponent {
   @Output()
   selectCategory = new EventEmitter<Category>();
 
+  @Input()
   selectedCategory: Category;
+
   constructor(private dataHandler: DataHandlerService) { }
 
   // ngOnInit(): void {
