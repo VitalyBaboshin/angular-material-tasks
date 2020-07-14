@@ -11,7 +11,7 @@
       (keydown.enter)="onConfirm()"
     >
     <button
-      *ngIf="tmpTitle.trim().length > 0"
+      *ngIf="inputTitle.value && tmpTitle.trim().length > 0"
       mat-button matSuffix mat-icon-button aria-label="Clear"
       (click)="tmpTitle=''" class="dialog-task-tilte"
     >
@@ -31,7 +31,7 @@
 
     <button mat-raised-button (click)="onCancel()">Отмена</button>
   </div>
-  <div class="col-12 text-center">
+  <div class="col-12 text-center" *ngIf="operType">
 
     <button
       mat-button
