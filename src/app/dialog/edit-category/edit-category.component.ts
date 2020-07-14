@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Category} from '../../model/Category';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {OperType} from '../operType';
 
 @Component({
   selector: 'app-edit-category',
@@ -12,17 +13,19 @@ export class EditCategoryComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<Category>,
-    @Inject(MAT_DIALOG_DATA) private data: [Category, string],
+    @Inject(MAT_DIALOG_DATA) private data: [Category, string, OperType],
     private dialog: MatDialog
   ) { }
 
   public dialogTitle: string;
   public category: Category;
+  public operType: OperType;
   public tmpTitle: string;
 
   ngOnInit(): void {
     this.category = this.data[0];
     this.dialogTitle = this.data[1];
+    this.operType = this.data[2];
     this.tmpTitle = this.category.title;
   }
 
