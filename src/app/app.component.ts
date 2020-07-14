@@ -13,7 +13,13 @@ export class AppComponent implements OnInit{
   title = 'angular-practice2';
   tasks: Task[];
   categories: Category[];
-  selectedCategory: Category;
+  public selectedCategory: Category = null;
+
+  // поиск
+  public searchTaskText = '';
+  // фильтрация
+  public statusFilter: boolean;
+
   constructor(private dataHandler: DataHandlerService) {
   }
 
@@ -34,7 +40,7 @@ export class AppComponent implements OnInit{
     ).subscribe((tasks: Task[]) => {
         this.tasks = tasks;
     });
-
+    this.updateTasks();
   }
 
   public onUpdateTask(task: Task): void {
@@ -65,4 +71,29 @@ export class AppComponent implements OnInit{
         this.onSelectCategory(this.selectedCategory);
     });
   }
+
+  // поиск задач
+  public onSearchTask(searchString: string): void {
+    this.searchTaskText = searchString;
+    this.updateTasks();
+  }
+
+  // фильтрация задач по статусу (все, решенные, не решенные)
+  public onFilterTaskByStatus(status: boolean): void {
+    this.statusFilter = status;
+    this.updateTasks();
+  }
+
+  public updateTasks(): void {
+    this.dataHandler.searchTasks(
+      this.selectedCategory,
+      this.searchTaskText,
+      this.statusFilter,
+      null
+    ).subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
+    });
+  }
+
 }
+
