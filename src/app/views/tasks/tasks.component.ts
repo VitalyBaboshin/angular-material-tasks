@@ -23,7 +23,7 @@ export class TasksComponent implements OnInit {
   public priorities: Priority[];
   public searchTaskText: string;
   public selectedStatusFilter: boolean;
-  public selectedPriorityFilter: string;
+  public selectedPriorityFilter: Priority;
   // ссылки и компоенты таблицы
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
@@ -41,6 +41,9 @@ export class TasksComponent implements OnInit {
     this.priorities = priorities;
   }
 
+  @Input()
+  selectedCategory: Category;
+
   @Output()
   updateTask = new EventEmitter<Task>();
 
@@ -57,7 +60,10 @@ export class TasksComponent implements OnInit {
   filterByTitle = new EventEmitter<string>();
 
   @Output()
-  filterByPriority = new EventEmitter<string>();
+  filterByPriority = new EventEmitter<Priority>();
+
+  @Output()
+  addTask = new EventEmitter<Task>();
 
   constructor(
     private dataHandler: DataHandlerService,
@@ -125,7 +131,7 @@ export class TasksComponent implements OnInit {
   public openEditTaskDialog(task: Task): void {
 
     // открытие диалогового окна
-    const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Редактирование задачи'], autoFocus: false});
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Редактирование задачи', 1], autoFocus: false});
 
     dialogRef.afterClosed().subscribe(result => {
       // обработка результата
@@ -186,20 +192,29 @@ export class TasksComponent implements OnInit {
     this.filterByTitle.emit(this.searchTaskText);
   }
 
-  // onFilterByPriority(priority: Priority): void {
-  //   this.filterByPriority.emit(priority);
-  // }
-
   onFilterByStatus(value: boolean): void {
     if (value !== this.selectedStatusFilter) {
       this.selectedStatusFilter = value;
       this.filterByStatus.emit(this.selectedStatusFilter);
     }
   }
-  onFilterByPriority(value: string): void {
+  onFilterByPriority(value: Priority): void {
     if (value !== this.selectedPriorityFilter) {
       this.selectedPriorityFilter = value;
       this.filterByPriority.emit(this.selectedPriorityFilter);
     }
+  }
+
+  openAddTaskDialog(): void {
+    const task = new Task(null, null, null, null, this.selectedCategory);
+
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Добавление задачи', 0]});
+
+    dialogRef.afterClosed().subscribe(result => {
+      // обработка результата
+      if (result) {
+        this.addTask.emit(task);
+      }
+    });
   }
 }
