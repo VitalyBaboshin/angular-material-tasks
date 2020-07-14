@@ -3,6 +3,7 @@ import {Task} from './model/Task';
 import {DataHandlerService} from './service/data-handler.service';
 import {Category} from './model/Category';
 import {mergeMap} from 'rxjs/operators';
+import {Priority} from './model/Priority';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +14,21 @@ export class AppComponent implements OnInit{
   title = 'angular-practice2';
   tasks: Task[];
   categories: Category[];
+  priorities: Priority[];
   public selectedCategory: Category = null;
 
   // поиск
   public searchTaskText = '';
   // фильтрация
   public statusFilter: boolean;
+  public priority: Priority;
 
   constructor(private dataHandler: DataHandlerService) {
   }
 
   ngOnInit(): void {
     this.dataHandler.getAllTasks().subscribe(tasks => this.tasks = tasks);
+    this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
     this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
     this.onSelectCategory(null);
   }
@@ -84,12 +88,17 @@ export class AppComponent implements OnInit{
     this.updateTasks();
   }
 
+  public onFilterTaskByPriority(priority: Priority): void {
+    this.priority = priority;
+    this.updateTasks();
+  }
+
   public updateTasks(): void {
     this.dataHandler.searchTasks(
       this.selectedCategory,
       this.searchTaskText,
       this.statusFilter,
-      null
+      this.priority
     ).subscribe((tasks: Task[]) => {
       this.tasks = tasks;
     });
