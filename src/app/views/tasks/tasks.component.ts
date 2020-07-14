@@ -19,11 +19,14 @@ export class TasksComponent implements OnInit {
   public displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
   public dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
   public tasks: Task[];
+  public searchTaskText: string;
+  public selectedStatusFilter: boolean;
   // ссылки и компоенты таблицы
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
 
   // текущие задачи для отображения на странице
+
   @Input('tasks')
   private set setTasks(tasks: Task[]) { // напрямую не присваиваем значения в переменную, только через @Input
     this.tasks = tasks;
@@ -38,6 +41,12 @@ export class TasksComponent implements OnInit {
 
   @Output()
   selectCategory = new EventEmitter<Category>(); // при нажатии на категорию из списка задач
+
+  @Output()
+  filterByStatus = new EventEmitter<boolean>();
+
+  @Output()
+  filterByTitle = new EventEmitter<string>();
 
   constructor(
     private dataHandler: DataHandlerService,
@@ -156,5 +165,20 @@ export class TasksComponent implements OnInit {
 
   onSelectCategory(category: Category): void {
     this.selectCategory.emit(category);
+  }
+
+  onConfirm(): void {
+
+  }
+
+  onFilterByTitle(): void {
+    this.filterByTitle.emit(this.searchTaskText);
+  }
+
+  onFilterByStatus(value: boolean): void {
+    if (value !== this.selectedStatusFilter) {
+      this.selectedStatusFilter = value;
+      this.filterByStatus.emit(this.selectedStatusFilter);
+    }
   }
 }
