@@ -11,7 +11,7 @@
       (keydown.enter)="onConfirm()"
     >
     <button
-      *ngIf="tmpTitle.trim().length > 0"
+      *ngIf="tmpTitle && tmpTitle.trim().length > 0"
       mat-button matSuffix mat-icon-button aria-label="Clear"
       (click)="tmpTitle=''" class="dialog-task-tilte"
     >
@@ -81,15 +81,18 @@
             class="green"
     >Активировать</button>
 
-    <button mat-button *ngIf="!task.completed"
-            (click)="toogleCompleted('true')"
-            class="green"
-    >Завершить задачу</button>
-    <button
-      mat-button
-      class="red"
-      (click)="delete()"
-    >Удалить задачу</button>
+    <div *ngIf="operType">
+      <button mat-button *ngIf="!task.completed"
+              (click)="toogleCompleted('true')"
+              class="green"
+      >Завершить задачу</button>
+      <button
+        mat-button
+        class="red"
+        (click)="delete()"
+      >Удалить задачу</button>
+    </div>
+
   </div>
 
 
