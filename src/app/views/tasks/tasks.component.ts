@@ -8,6 +8,7 @@ import {EditTaskDialogComponent} from '../../dialog/edit-task-dialog/edit-task-d
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../dialog/confirm-dialog/confirm-dialog.component';
 import {Category} from '../../model/Category';
+import {Priority} from '../../model/Priority';
 
 @Component({
   selector: 'app-tasks',
@@ -19,8 +20,10 @@ export class TasksComponent implements OnInit {
   public displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
   public dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
   public tasks: Task[];
+  public priorities: Priority[];
   public searchTaskText: string;
   public selectedStatusFilter: boolean;
+  public selectedPriorityFilter: string;
   // ссылки и компоенты таблицы
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
@@ -31,6 +34,11 @@ export class TasksComponent implements OnInit {
   private set setTasks(tasks: Task[]) { // напрямую не присваиваем значения в переменную, только через @Input
     this.tasks = tasks;
     this.fillTable();
+  }
+
+  @Input('priorities')
+  private set setPriorities(priorities: Priority[]) { // напрямую не присваиваем значения в переменную, только через @Input
+    this.priorities = priorities;
   }
 
   @Output()
@@ -47,6 +55,9 @@ export class TasksComponent implements OnInit {
 
   @Output()
   filterByTitle = new EventEmitter<string>();
+
+  @Output()
+  filterByPriority = new EventEmitter<string>();
 
   constructor(
     private dataHandler: DataHandlerService,
@@ -175,10 +186,20 @@ export class TasksComponent implements OnInit {
     this.filterByTitle.emit(this.searchTaskText);
   }
 
+  // onFilterByPriority(priority: Priority): void {
+  //   this.filterByPriority.emit(priority);
+  // }
+
   onFilterByStatus(value: boolean): void {
     if (value !== this.selectedStatusFilter) {
       this.selectedStatusFilter = value;
       this.filterByStatus.emit(this.selectedStatusFilter);
+    }
+  }
+  onFilterByPriority(value: string): void {
+    if (value !== this.selectedPriorityFilter) {
+      this.selectedPriorityFilter = value;
+      this.filterByPriority.emit(this.selectedPriorityFilter);
     }
   }
 }
