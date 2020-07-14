@@ -33,7 +33,7 @@
         <mat-option [value]="false">Незавершенные задачи</mat-option>
       </mat-select>
       <button
-        (click)="$event.stopPropagation(); onFilterByStatus(statusFilter.value); statusFilter.value =''"
+        (click)="$event.stopPropagation(); onFilterByStatus(null);"
         *ngIf="selectedStatusFilter != null"
         class="clear-icon size25 gray"
         mat-button matSuffix mat-icon-button aria-label="Clear"
@@ -61,7 +61,7 @@
 <!--        <mat-option [value]="false">Незавершенные задачи</mat-option>-->
       </mat-select>
       <button
-        (click)="$event.stopPropagation(); onFilterByPriority(null); priorityFilter.value =''"
+        (click)="$event.stopPropagation(); onFilterByPriority(null);"
         *ngIf="selectedPriorityFilter != null"
         class="clear-icon size25 gray"
         mat-button matSuffix mat-icon-button aria-label="Clear"
@@ -89,7 +89,7 @@
         </button>
       </div>
       <div class="text-right col-6">
-        <button mat-raised-button color="primary">Добавить</button>
+        <button mat-raised-button color="primary" (click)="openAddTaskDialog()">Добавить</button>
       </div>
     </div>
 
