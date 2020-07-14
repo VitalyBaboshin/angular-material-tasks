@@ -28,6 +28,9 @@ export class CategoriesComponent {
   @Output()
   deleteCategory = new EventEmitter<Category>();
 
+  @Output()
+  addCategory = new EventEmitter<Category>();
+
   constructor(private dataHandler: DataHandlerService,
               private dialog: MatDialog
   ) { }
@@ -46,7 +49,7 @@ export class CategoriesComponent {
 
   public openEditDialog(category: Category): void {
     // открытие диалогового окна
-    const dialogRef = this.dialog.open(EditCategoryComponent, {data: [category, 'Редактирование категории'], autoFocus: false});
+    const dialogRef = this.dialog.open(EditCategoryComponent, {data: [category, 'Редактирование категории', 1], autoFocus: false});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'delete') {
@@ -56,6 +59,20 @@ export class CategoriesComponent {
     //
       if (result as Category) {
         this.updateCategory.emit(category);
+        return;
+      }
+    });
+  }
+
+  public openAddCategoryDialog(): void {
+
+    const category = new Category(null, null);
+    // открытие диалогового окна
+    const dialogRef = this.dialog.open(EditCategoryComponent, {data: [category, 'Редактирование категории', 0], autoFocus: false});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result ) {
+        this.addCategory.emit(category);
         return;
       }
     });
