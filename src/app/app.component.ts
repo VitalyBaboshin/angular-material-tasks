@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
 
   // поиск
   public searchTaskText = '';
+  public searchCategoryText = '';
   // фильтрация
   public statusFilter: boolean;
   public priority: Priority;
@@ -113,6 +114,13 @@ export class AppComponent implements OnInit{
   public onAddCategory(category: Category): void {
     this.dataHandler.addCategory(category).subscribe( result => {
       this.updateTasks();
+    });
+  }
+
+  onSearchCategory(title: string): void {
+    this.searchCategoryText = title;
+    this.dataHandler.searchCategory(title).subscribe(categories => {
+      this.categories = categories;
     });
   }
 }
