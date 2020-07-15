@@ -33,21 +33,22 @@ export class TaskDaoArray implements TaskDao {
     return of(taskTmp);
   }
 
-
+  /** количество завершенных задач в заданной категории ( если category === null, то для все категорий) */
   getCompletedCountInCategory(category: Category): Observable<number> {
-    return undefined;
+    return of(this.searchTasks(category, null, true, null).length);
   }
-
+  /** кол-во всех задач в общем */
   getTotalCount(): Observable<number> {
-    return undefined;
+    return of(TestData.tasks.length);
   }
-
+  /** количество всех задач в заданной категории ( если category === null, то для все категорий) */
   getTotalCountInCategory(category: Category): Observable<number> {
-    return undefined;
+    return of(this.searchTasks(category, null, null, null).length);
   }
 
+  /** количество незавершенных задач в заданной категории ( если category === null, то для все категорий) */
   getUncompletedCountInCategory(category: Category): Observable<number> {
-    return undefined;
+    return of(this.searchTasks(category, null, false, null).length);
   }
 
   /** Поиск задачи по параметрам, если одно из значений null то не будем учитывать его при поиске */
