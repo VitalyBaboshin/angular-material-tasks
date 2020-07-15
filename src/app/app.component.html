@@ -18,7 +18,11 @@
     <div class="content">
       <div class="container-fluid">
         <!--статистика-->
-        <app-stat></app-stat>
+        <app-stat
+          [totalTasksInCategory]="totalTasksCountInCategory"
+          [completeTasksInCategory]="completedTasksCountInCategory"
+          [uncompleteTasksInCategory]="uncompleteTasksCountInCategory"
+        ></app-stat>
 
         <!--список задач-->
         <div class="row">
