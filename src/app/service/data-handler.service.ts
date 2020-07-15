@@ -57,4 +57,9 @@ export class DataHandlerService {
   addCategory(category: Category): Observable<Category> {
     return this.categoryDaoArray.add(category);
   }
+
+  /** Поиск категории по названию */
+  searchCategory(searchText: string): Observable<Category[]> {
+    return this.categoryDaoArray.search(searchText);
+  }
 }
