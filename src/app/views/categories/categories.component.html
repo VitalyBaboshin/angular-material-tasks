@@ -18,6 +18,31 @@
   <div class="sidebar-wrapper">
     <ul class="nav">
 
+      <!--поиск категорий-->
+      <div class="search-category-area">
+        <mat-form-field class="example-full-width">
+          <input
+            #inputSearchCategory
+            (keydown.escape)="searchCategoryTitle = ''; search()"
+            (keyup)="search()"
+            [(ngModel)]="searchCategoryTitle"
+
+            matInput
+            maxlength="256"
+            placeholder="Поиск категорий"
+          >
+          <button
+            (click)="searchCategoryTitle = ''; search()"
+            *ngIf="inputSearchCategory.value.trim().length > 0" aria-label="clear"
+            class="search-category-button size25 gray"
+            mat-icon-button
+            matSuffix
+          >
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
       <li class="nav-item category" (click)="showTasksByCategory(null)" [class.active]="selectedCategory === null">
         <a class="nav-link pointer">
           <span class="all-category-title">Все</span>
@@ -27,7 +52,7 @@
 
       <!-- разделитель-->
       <div class="line"></div>
-
+      <div *ngIf="categories.length === 0"><p class="not-found">Ничего не найдено</p></div>
       <li class="nav-item pointer"
           *ngFor="let category of categories; let index = index"
           (click)="showTasksByCategory(category)"
