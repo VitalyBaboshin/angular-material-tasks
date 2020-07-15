@@ -75,7 +75,7 @@ export class TasksComponent implements OnInit {
 
     // dataSource Обязательно нужно создавать для таблицы, в него присваивается любой источник (БД, массивы)
     this.dataSource = new MatTableDataSource();
-    this.fillTable(); // заполняем таблицы данными (задачи) и всеми метаданными
+    this.onSelectCategory(null);
   }
 
   // в зависимости от статуса задачи - вернуть цвет названия
