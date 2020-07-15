@@ -11,8 +11,9 @@ import {EditCategoryComponent} from '../../dialog/edit-category/edit-category.co
 })
 export class CategoriesComponent {
 
+  // для отображения иконки редактирования при наведении на категорию
   public indexMouseMove: number;
-
+  public searchCategoryTitle: string; // текущее значение для поиска категории
   @Input()
   categories: Category[];
 
@@ -30,6 +31,9 @@ export class CategoriesComponent {
 
   @Output()
   addCategory = new EventEmitter<Category>();
+
+  @Output()
+  searchCategory = new EventEmitter<string>();
 
   constructor(private dataHandler: DataHandlerService,
               private dialog: MatDialog
@@ -80,5 +84,16 @@ export class CategoriesComponent {
 
   public showEditIcon(index: number): void {
     this.indexMouseMove = index;
+  }
+
+  // поиск категории
+  search(): void {
+
+    // текстовое поле пустое то выходим из метода
+    if (this.searchCategoryTitle == null) {
+      return;
+    }
+    //
+    this.searchCategory.emit(this.searchCategoryTitle);
   }
 }
