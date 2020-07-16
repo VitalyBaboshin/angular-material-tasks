@@ -1,6 +1,6 @@
 <mat-dialog-content>
   <p mat-dialog-title>{{dialogTitle}}</p>
-  <p>Выбранная категория: {{category.title}}</p>
+  <p *ngIf="operType">Выбранная категория: {{category.title}}</p>
 
   <mat-form-field>
     <mat-label>Название (15 символов)</mat-label>
