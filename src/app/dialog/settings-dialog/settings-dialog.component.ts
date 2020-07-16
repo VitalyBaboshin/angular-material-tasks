@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {Priority} from '../../model/Priority';
+import {MatDialogRef} from '@angular/material/dialog';
+import {DataHandlerService} from '../../service/data-handler.service';
 
 @Component({
   selector: 'app-settings-dialog',
@@ -6,10 +9,19 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./settings-dialog.component.scss']
 })
 export class SettingsDialogComponent implements OnInit {
+  priorities: Priority[];
 
-  constructor() { }
+  constructor(
+    private dialogRef: MatDialogRef<SettingsDialogComponent>,
+    private dataHandler: DataHandlerService
+  ) { }
 
   ngOnInit(): void {
+    this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
+    // console.log(this.data[0]);
   }
 
+  public onClose(): void {
+    this.dialogRef.close(false);
+  }
 }
