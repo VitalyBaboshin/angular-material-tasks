@@ -12,13 +12,18 @@
   <div class="main-panel">
 
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-      <app-header></app-header>
+      <app-header
+        [categoryName]="selectedCategory ? selectedCategory.title : 'Все'"
+        [showStat]="statVisible"
+        (toggleStat)="visibleStat($event)"
+      ></app-header>
     </nav>
 
     <div class="content">
       <div class="container-fluid">
         <!--статистика-->
         <app-stat
+          *ngIf="statVisible"
           [totalTasksInCategory]="totalTasksCountInCategory"
           [completeTasksInCategory]="completedTasksCountInCategory"
           [uncompleteTasksInCategory]="uncompleteTasksCountInCategory"
