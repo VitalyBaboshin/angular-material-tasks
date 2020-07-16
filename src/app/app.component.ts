@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
   completedTasksCountInCategory: number;
   uncompleteTasksCountInCategory: number;
   uncompletedTotalTasksCount: number;
+  statVisible: boolean;
 
   public selectedCategory: Category = null;
 
@@ -41,19 +42,12 @@ export class AppComponent implements OnInit{
     this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
     this.onSelectCategory(null);
     this.updateStats();
+    this.statVisible = false;
   }
 
   // отображение задач по выбранной категории
   public onSelectCategory(category: Category): void {
     this.selectedCategory = category;
-    this.dataHandler.searchTasks(
-      this.selectedCategory,
-      null,
-      null,
-      null
-    ).subscribe((tasks: Task[]) => {
-        this.tasks = tasks;
-    });
     this.updateTasksAndStats();
 
   }
@@ -100,7 +94,7 @@ export class AppComponent implements OnInit{
   // фильтрация задач по статусу (все, решенные, не решенные)
   public onFilterTaskByStatus(status: boolean): void {
     this.statusFilter = status;
-    this.updateTasks();
+    this.updateTasksAndStats();
   }
 
   public onFilterTaskByPriority(priority: Priority): void {
@@ -159,6 +153,10 @@ export class AppComponent implements OnInit{
           this.uncompleteTasksCountInCategory = array[2];
           this.uncompletedTotalTasksCount = array[3];
         });
+  }
+
+  visibleStat(visible: boolean): void {
+    this.statVisible = visible;
   }
 }
 
