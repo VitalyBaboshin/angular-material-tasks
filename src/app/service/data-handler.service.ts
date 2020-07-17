@@ -38,12 +38,20 @@ export class DataHandlerService {
     return this.taskDaoArray.update(task);
   }
 
+  updatePriority(priority: Priority): Observable<Priority> {
+    return this.priorityDaoArray.update(priority);
+  }
+
   deleteTask(id: number): Observable<Task> {
     return this.taskDaoArray.delete(id);
   }
 
   deleteCategory(id: number): Observable<Category> {
     return this.categoryDaoArray.delete(id);
+  }
+
+  deletePriority(id: number): Observable<Priority> {
+    return this.priorityDaoArray.delete(id);
   }
 
   searchTasks(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
@@ -56,6 +64,10 @@ export class DataHandlerService {
 
   addCategory(category: Category): Observable<Category> {
     return this.categoryDaoArray.add(category);
+  }
+
+  addPriority(priority: Priority): Observable<Priority> {
+      return this.priorityDaoArray.add(priority);
   }
 
   /** Поиск категории по названию */
