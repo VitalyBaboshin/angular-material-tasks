@@ -5,6 +5,10 @@
 
   <app-priorities
     [priorities]="priorities"
+    (deletePriority) = "deletePriority($event)"
+    (updatePriority) = "updatePriority($event)"
+    (addPriority) = "addPriority($event)"
+
   ></app-priorities>
 </mat-dialog-content>
 
