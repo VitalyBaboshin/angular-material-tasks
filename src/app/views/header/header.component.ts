@@ -1,4 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {SettingsDialogComponent} from '../../dialog/settings-dialog/settings-dialog.component';
+import {Priority} from '../../model/Priority';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +10,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  private priorities: Priority[];
   @Input()
   categoryName: string;
 
@@ -16,7 +20,9 @@ export class HeaderComponent implements OnInit {
   @Output()
   toggleStat = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
   }
@@ -27,6 +33,10 @@ export class HeaderComponent implements OnInit {
 
   // окно настроек
   showSettings(): void {
-
+    const dialogRef = this.dialog.open(SettingsDialogComponent,
+      {
+        autoFocus: false,
+        width: '500px'
+      });
   }
 }
