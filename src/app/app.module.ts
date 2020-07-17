@@ -78,7 +78,9 @@ registerLocaleData(localeRu);
   entryComponents: [
     EditTaskDialogComponent,
     ConfirmDialogComponent,
-    AboutDialogComponent
+    AboutDialogComponent,
+    EditPriorityDialogComponent,
+    SettingsDialogComponent
   ],
   bootstrap: [AppComponent]
 })
