@@ -79,7 +79,7 @@ export class TasksComponent implements OnInit {
   }
 
   // в зависимости от статуса задачи - вернуть цвет названия
-  private getPriorityColor(task: Task): string {
+  getPriorityColor(task: Task): string {
 
     // цвет завершенной задачи
     if (task.completed) {
