@@ -9,13 +9,18 @@ import {EditCategoryComponent} from '../../dialog/edit-category/edit-category.co
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent {
+export class CategoriesComponent{
 
-  // для отображения иконки редактирования при наведении на категорию
-  public indexMouseMove: number;
-  public searchCategoryTitle: string; // текущее значение для поиска категории
   @Input()
   categories: Category[];
+
+  @Input()
+  selectedCategory: Category;
+
+  @Input('categoryMap')
+  set setCategoryMap(categoryMap: Map<Category, number> ) {
+    this.selectedCategoryMap = categoryMap ;
+  }
 
   @Output()
   updateCategory = new EventEmitter<Category>();
@@ -23,8 +28,6 @@ export class CategoriesComponent {
   @Output()
   selectCategory = new EventEmitter<Category>();
 
-  @Input()
-  selectedCategory: Category;
 
   @Output()
   deleteCategory = new EventEmitter<Category>();
@@ -34,6 +37,11 @@ export class CategoriesComponent {
 
   @Output()
   searchCategory = new EventEmitter<string>();
+
+  // для отображения иконки редактирования при наведении на категорию
+  public indexMouseMove: number;
+  public searchCategoryTitle: string; // текущее значение для поиска категории
+  public selectedCategoryMap: Map<Category, number>;  // список категорий и количество активных задач
 
   constructor(private dataHandler: DataHandlerService,
               private dialog: MatDialog
@@ -67,7 +75,6 @@ export class CategoriesComponent {
       }
     });
   }
-
   public openAddCategoryDialog(): void {
 
     const category = new Category(null, null);
