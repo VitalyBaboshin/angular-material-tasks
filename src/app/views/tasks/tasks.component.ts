@@ -206,7 +206,7 @@ export class TasksComponent implements OnInit {
   }
 
   openAddTaskDialog(): void {
-    const task = new Task(null, null, null, null, this.selectedCategory);
+    const task = new Task(null, '', false, null, this.selectedCategory);
 
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Добавление задачи', 0]});
 
