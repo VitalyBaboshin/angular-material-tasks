@@ -5,6 +5,7 @@ import {Category} from './model/Category';
 import {concatMap, map} from 'rxjs/operators';
 import {Priority} from './model/Priority';
 import {zip} from 'rxjs';
+import {IntroService} from './service/intro.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,7 @@ export class AppComponent implements OnInit {
   completedTasksCountInCategory: number;
   uncompleteTasksCountInCategory: number;
   uncompletedTotalTasksCount: number;
-  statVisible = false;
+  statVisible = true; // во время инициализации, показать / скрыть статистику
 
   public selectedCategory: Category = null;
 
@@ -37,16 +38,21 @@ export class AppComponent implements OnInit {
   public statusFilter: boolean;
   public priority: Priority;
 
-  constructor(private dataHandler: DataHandlerService) {
+  constructor(
+    private dataHandler: DataHandlerService,
+    private introService: IntroService
+  ) {
   }
 
   ngOnInit(): void {
     // this.dataHandler.getAllTasks().subscribe(tasks => this.tasks = tasks);
     this.dataHandler.getAllPriorities().subscribe(priorities => this.priorities = priorities);
     this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
-    // this.updateStats();
+
     this.fillCategories();
     this.onSelectCategory(null);
+
+    this.introService.startIntroJS(true);
   }
 
   // отображение задач по выбранной категории
