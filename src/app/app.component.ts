@@ -38,10 +38,17 @@ export class AppComponent implements OnInit {
   public statusFilter: boolean;
   public priority: Priority;
 
+  // параметры бокового меню с категориями
+  menuOpened: boolean; // открыть-закрыть
+  menuMode: string; // тип выдвижения (поверх, с толканием и пр.)
+  menuPosition: string; // сторона
+  showBackdrop: boolean; // показывать фоновое затемнение или нет
+
   constructor(
     private dataHandler: DataHandlerService,
     private introService: IntroService
   ) {
+    this.setMenuValues(); // установить настройки меню
   }
 
   ngOnInit(): void {
@@ -204,6 +211,25 @@ export class AppComponent implements OnInit {
 
   visibleStat(visible: boolean): void {
     this.statVisible = visible;
+  }
+
+  // если закрыли меню любым способом - ставим значение false
+  onClosedMenu(): void {
+    this.menuOpened = false;
+  }
+
+  // параметры меню
+  setMenuValues(): void {
+    this.menuPosition = 'left'; // расположение слева
+    this.menuOpened = true; // меню сразу будет открыто по-умолчанию
+    this.menuMode = 'push'; // будет "толкать" основной контент, а не закрывать его
+    this.showBackdrop = false; // показывать темный фон или нет (нужно больше для мобильной версии)
+
+  }
+
+  // показать-скрыть меню
+  toggleMenu(): void {
+    this.menuOpened = !this.menuOpened;
   }
 }
 
