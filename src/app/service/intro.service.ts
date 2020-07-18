@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import * as introJS from 'intro.js/intro';
+import * as introJs from 'intro.js/intro';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class IntroService {
   private static INTRO_VIEWED_KEY = 'intro-viewed';
   private static INTRO_VIEWED_VALUE = 'done';
 
-  private introJS = introJS; // объект для работы с интро
+  public introJS = introJs(); // объект для работы с интро
 
   constructor() { }
 
