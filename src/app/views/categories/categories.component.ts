@@ -38,6 +38,9 @@ export class CategoriesComponent{
   @Output()
   searchCategory = new EventEmitter<string>();
 
+  @Input()
+  uncompletedTotal: number;
+
   // для отображения иконки редактирования при наведении на категорию
   public indexMouseMove: number;
   public searchCategoryTitle: string; // текущее значение для поиска категории
