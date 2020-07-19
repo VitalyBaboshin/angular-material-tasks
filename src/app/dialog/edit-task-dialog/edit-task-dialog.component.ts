@@ -6,6 +6,7 @@ import {Category} from '../../model/Category';
 import {Priority} from '../../model/Priority';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import {OperType} from '../operType';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -14,12 +15,16 @@ import {OperType} from '../operType';
 })
 export class EditTaskDialogComponent implements OnInit {
 
+  isMobile: boolean;
   constructor(
     private dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: [Task, string, OperType],
     private dataHandler: DataHandlerService,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private deviceDetect: DeviceDetectorService
+  ) {
+    this.isMobile = deviceDetect.isMobile();
+  }
 
   public categories: Category[];
   public priorities: Priority[];
