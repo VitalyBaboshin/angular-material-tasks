@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Task} from './model/Task';
 import {DataHandlerService} from './service/data-handler.service';
 import {Category} from './model/Category';
@@ -6,13 +6,14 @@ import {concatMap, map} from 'rxjs/operators';
 import {Priority} from './model/Priority';
 import {zip} from 'rxjs';
 import {IntroService} from './service/intro.service';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
   // коллекция категорий с количеством незавершенных задач для каждой из них
   public categoryMap = new Map<Category, number>();
@@ -44,10 +45,21 @@ export class AppComponent implements OnInit {
   menuPosition: string; // сторона
   showBackdrop: boolean; // показывать фоновое затемнение или нет
 
+  // тип устройства
+  isMobile: boolean;
+  isTablet: boolean;
+
   constructor(
     private dataHandler: DataHandlerService,
-    private introService: IntroService
+    private introService: IntroService,
+    private deviceService: DeviceDetectorService // для определения типа устройства (моб., десктоп, планшет)
   ) {
+    // определяем тип запроса
+    this.isMobile = deviceService.isMobile();
+    this.isTablet = deviceService.isTablet();
+
+    this.statVisible = this.isMobile ? false : true; // если моб. устройство, то по-умолчанию не показывать статистику
+
     this.setMenuValues(); // установить настройки меню
   }
 
@@ -58,8 +70,12 @@ export class AppComponent implements OnInit {
 
     this.fillCategories();
     this.onSelectCategory(null);
+  }
 
-    this.introService.startIntroJS(true);
+  ngAfterViewInit(): void {
+    if (!this.isMobile && !this.isTablet) {
+      this.introService.startIntroJS(true);
+    }
   }
 
   // отображение задач по выбранной категории
@@ -221,9 +237,9 @@ export class AppComponent implements OnInit {
   // параметры меню
   setMenuValues(): void {
     this.menuPosition = 'left'; // расположение слева
-    this.menuOpened = true; // меню сразу будет открыто по-умолчанию
-    this.menuMode = 'push'; // будет "толкать" основной контент, а не закрывать его
-    this.showBackdrop = false; // показывать темный фон или нет (нужно больше для мобильной версии)
+    this.menuOpened = !this.isMobile; // меню сразу будет открыто по-умолчанию
+    this.menuMode = this.isMobile ? 'over' : 'push'; // будет "толкать" основной контент, а не закрывать его
+    this.showBackdrop = this.isMobile; // показывать темный фон или нет (нужно больше для мобильной версии)
 
   }
 
