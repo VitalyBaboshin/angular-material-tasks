@@ -66,7 +66,8 @@
 
 <!--кнопки возможных дествий-->
 <mat-dialog-actions>
-  <div class="col-md-5 col-12">
+
+  <div [ngClass]="{'text-center': isMobile, 'no-padding': isMobile, 'text-left': !isMobile}" class="col-md-5 col-12">
     <button
       mat-raised-button color="primary"
       (click)="onConfirm()"
@@ -75,7 +76,11 @@
 
     <button mat-raised-button (click)="onCancel()">Отмена</button>
   </div>
-  <div class="col-md-7 col-12 text-right">
+
+
+  <div class="col-md-7 col-12"
+       [ngClass]="{'text-center': isMobile, 'text-right': !isMobile}"
+  >
     <button mat-button *ngIf="task.completed"
             (click)="toogleCompleted('false')"
             class="green"
@@ -85,10 +90,12 @@
       <button mat-button *ngIf="!task.completed"
               (click)="toogleCompleted('true')"
               class="green"
+              [class.no-padding]="isMobile"
       >Завершить задачу</button>
       <button
         mat-button
         class="red"
+        [class.no-padding]="isMobile"
         (click)="delete()"
       >Удалить задачу</button>
     </div>

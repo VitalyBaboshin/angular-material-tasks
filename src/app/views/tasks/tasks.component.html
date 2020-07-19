@@ -1,32 +1,32 @@
 <!--поиск фильтрация-->
 <div class="row">
   <!--фильтр по тексту-->
-   <div class="col-md-3 col-sm-12" >
-     <mat-form-field>
-       <input
-         #filterInput
-         (keydown.escape)="onConfirm()"
-         (keyup)="onFilterByTitle()"
-         [(ngModel)]="searchTaskText"
-         matInput
-         placeholder="Поиск в текущей категории"
-       >
-       <button
-         (click)="searchTaskText=''; onFilterByTitle()"
-         *ngIf="filterInput.value.trim().length > 0"
-         class="clear-icon size25 gray"
-         mat-button matSuffix mat-icon-button aria-label="Clear"
-       >
-         <mat-icon>clear</mat-icon>
-       </button>
-     </mat-form-field>
-   </div>
+  <div class="col-md-3 col-sm-12">
+    <mat-form-field>
+      <input
+        #filterInput
+        (keydown.escape)="onConfirm()"
+        (keyup)="onFilterByTitle()"
+        [(ngModel)]="searchTaskText"
+        matInput
+        placeholder="Поиск в текущей категории"
+      >
+      <button
+        (click)="searchTaskText=''; onFilterByTitle()"
+        *ngIf="filterInput.value.trim().length > 0"
+        class="clear-icon size25 gray"
+        mat-button matSuffix mat-icon-button aria-label="Clear"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
 
   <!--фильтр по статусу-->
-  <div class="col-md-3 col-sm-12" >
+  <div class="col-md-3 col-sm-12">
     <mat-form-field>
       <mat-select #statusFilter (valueChange)="onFilterByStatus(this.$event)"
-        [value]="selectedStatusFilter" placeholder="фильтр по статусу"
+                  [value]="selectedStatusFilter" placeholder="фильтр по статусу"
       >
         <mat-option [value]="null">Все статусы</mat-option>
         <mat-option [value]="true">Завершенные задачи</mat-option>
@@ -44,7 +44,7 @@
   </div>
 
   <!--фильтр по приоритету-->
-  <div class="col-md-3 col-sm-12" >
+  <div class="col-md-3 col-sm-12">
     <mat-form-field>
       <mat-select #priorityFilter (valueChange)="onFilterByPriority(this.$event)"
                   [value]="selectedPriorityFilter" placeholder="фильтр по приоритету"
@@ -68,9 +68,11 @@
 
   <!--сбросить фильтр и добавить задачу-->
   <div class="col-md-3 col-sm-12 text-right">
-    <div class="row">
+    <div class="row padding-top-10">
       <div class="text-left col-6">
         <button
+          mat-stroked-button
+          color="basic"
           (click)="$event.stopPropagation();
                   onFilterByStatus(null);
                   searchTaskText = '';
@@ -79,8 +81,9 @@
           *ngIf="selectedStatusFilter != null
               || (searchTaskText != null && searchTaskText.trim() != '')
               || selectedPriorityFilter != null"
+
         >
-          Сбросить фильтры
+          Сбросить
         </button>
       </div>
       <div class="text-right col-6">
@@ -93,10 +96,10 @@
   <!--список задач  -->
   <div class="col-md-12 task-list">
     <!--таблица задач-->
-    <div class="card">
-<!--      <div class="card-header card-header-warning">-->
-<!--        <h4 class="card-title">Список задач </h4>-->
-<!--      </div>-->
+    <div class="card" *ngIf="!isMobile">
+      <div class="card-header card-header-warning">
+        <h4 class="card-title">Список задач </h4>
+      </div>
       <div class="card-body table-responsive" *ngIf="tasks && tasks.length > 0">
         <table [dataSource]="dataSource" mat-table matSort>
 
@@ -110,7 +113,7 @@
           <!--нумерация-->
           <ng-container matColumnDef="id">
             <th *matHeaderCellDef mat-header-cell></th>
-            <td *matCellDef="let index = index;" class="col-id" mat-cell> {{index+1}} </td>
+            <td *matCellDef="let index = index;" class="col-id" mat-cell> {{index + 1}} </td>
           </ng-container>
 
           <!--название задачи-->
@@ -125,14 +128,16 @@
           <!--дата выполнения-->
           <ng-container matColumnDef="date">
             <th *matHeaderCellDef mat-header-cell mat-sort-header>Срок</th>
-            <td class="col-date" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'novalue': !task.date}" mat-cell>
+            <td class="col-date" *matCellDef="let task;"
+                [ngClass]="{'completed': task.completed, 'novalue': !task.date}" mat-cell>
               {{task.date | taskDate}} </td>
           </ng-container>
 
           <!--приоритет-->
           <ng-container matColumnDef="priority">
             <th *matHeaderCellDef mat-header-cell mat-sort-header>Приоритет</th>
-            <td class="col-priority" *matCellDef="let task;" [ngClass]="{'completed': task.completed, 'novalue': !task.priority}" mat-cell>
+            <td class="col-priority" *matCellDef="let task;"
+                [ngClass]="{'completed': task.completed, 'novalue': !task.priority}" mat-cell>
               {{task.priority ? task.priority.title : "Без приоритета"}} </td>
           </ng-container>
 
@@ -171,7 +176,7 @@
               <mat-checkbox
                 (click)="$event.stopPropagation()"
                 (change)="$event ? onToggleStatus(task) : null"
-                [checked] = "task.completed"
+                [checked]="task.completed"
               >
               </mat-checkbox>
             </td>
@@ -191,6 +196,87 @@
 
       </div>
       <div *ngIf="tasks && tasks.length == 0"><p class="not-found">Нету записей</p></div>
+    </div>
+
+    <!--для мобильных устройств-->
+    <div *ngIf="isMobile && tasks.length > 0">
+      <div *ngFor="let task of tasks; let index = index; "
+           [ngClass]="{'completed': task.completed}">
+
+        <div (click)="$event.stopPropagation(); openEditTaskDialog(task)"
+             [ngClass]="{'background-completed': task.completed}"
+             class="card card-mobile">
+
+          <!--область для отображения приоритета-->
+          <div [ngClass]="{'background-completed': task.completed}"
+               [style.background-color]="getPriorityColor(task)"
+               class="mobile-priority-top">
+          </div>
+
+          <div class="row">
+
+            <!--область для оображения названия-->
+            <div class="mobile-title-inner  col-9 col-md-10 align-top">
+              <div [class.completed]="task.completed" class="mobile-title"
+              >{{task.title}}</div>
+            </div>
+
+            <!--область для кружечка с выбором цвета-->
+            <div class="col-2 col-md-1 align-top mobile-check text-right">
+              <button class="nowidth" (click)="$event.stopPropagation(); onToggleStatus(task)" *ngIf="!task.completed"
+                      mat-icon-button>
+                <mat-icon (click)="$event.stopPropagation(); onToggleStatus(task)"
+                          class="check-icon-notcompleted"
+                >check_circle_outline
+                </mat-icon>
+              </button>
+
+              <button class="nowidth" (click)="$event.stopPropagation(); onToggleStatus(task)" *ngIf="task.completed"
+                      mat-icon-button>
+                <mat-icon class="check-icon-completed">check_circle</mat-icon>
+              </button>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+
+            <div class="mobile-info-inner  col-12 align-top">
+
+
+              <!--отобажение категории-->
+              <div [ngClass]="{'completed': task.completed}"
+                   class="mobile-category"
+              >
+                <p
+                  [ngClass]="{'category': !task.completed && task.category}">  {{task.category ? task.category.title : 'Без категории'}} </p>
+              </div>
+              <!--отображение приоритета-->
+              <div *ngIf="task.priority" class="mobile-priority">
+                <p [ngClass]="{'priority': !task.completed, 'completed': task.completed}"
+                   [style.background-color]="getMobilePriorityBgColor(task)">  {{task.priority.title}} </p>
+              </div>
+              <!--отображение даты-->
+              <div [ngClass]="{'completed': task.completed}" class="mobile-date">
+                {{task.date | taskDate}}
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+      </div>
+
+
+    </div>
+
+    <div *ngIf="isMobile && tasks.length == 0">
+      <p class="not-found">Ничего не найдено</p>
     </div>
   </div>
 </div>
