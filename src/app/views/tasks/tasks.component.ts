@@ -9,6 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../dialog/confirm-dialog/confirm-dialog.component';
 import {Category} from '../../model/Category';
 import {Priority} from '../../model/Priority';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
   selector: 'app-tasks',
@@ -65,10 +66,15 @@ export class TasksComponent implements OnInit {
   @Output()
   addTask = new EventEmitter<Task>();
 
+  isMobile: boolean;
+
   constructor(
     private dataHandler: DataHandlerService,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private deviceDetector: DeviceDetectorService
+  ) {
+    this.isMobile = this.deviceDetector.isMobile();
+  }
 
   ngOnInit(): void {
     // this.dataHandler.getAllTasks().subscribe(tasks => this.tasks = tasks);
@@ -216,5 +222,13 @@ export class TasksComponent implements OnInit {
         this.addTask.emit(task);
       }
     });
+  }
+
+  getMobilePriorityBgColor(task: Task): string {
+    if (task.priority != null && !task.completed) {
+      return task.priority.color;
+    }
+
+    return 'none';
   }
 }
