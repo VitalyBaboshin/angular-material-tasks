@@ -3,6 +3,7 @@ import {DataHandlerService} from '../../service/data-handler.service';
 import {Category} from '../../model/Category';
 import {MatDialog} from '@angular/material/dialog';
 import {EditCategoryComponent} from '../../dialog/edit-category/edit-category.component';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
   selector: 'app-categories',
@@ -46,9 +47,16 @@ export class CategoriesComponent{
   public searchCategoryTitle: string; // текущее значение для поиска категории
   public selectedCategoryMap: Map<Category, number>;  // список категорий и количество активных задач
 
+  isMobile: boolean;
+  isTablet: boolean;
+
   constructor(private dataHandler: DataHandlerService,
-              private dialog: MatDialog
-  ) { }
+              private dialog: MatDialog,
+              private deviceDetector: DeviceDetectorService
+  ) {
+    this.isMobile = deviceDetector.isMobile();
+    this.isMobile = deviceDetector.isTablet();
+  }
 
   showTasksByCategory(category: Category): void {
 
